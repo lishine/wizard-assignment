@@ -1,3 +1,4 @@
+
 export const wizardData = {
     name: 'My wizard',
     sections: [
@@ -22,3 +23,4 @@ export const wizardData = {
         },
     ],
 }
+

@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { useCurrentState } from '~/features/Wizard/state'
 
 export const Navigation = () => {
-    let { section: currentSection, step: currentStep } = useCurrentState()
     const [childs, setChilds] = useState<any[]>([])
 
     useEffect(() => {
@@ -13,36 +12,31 @@ export const Navigation = () => {
         wizardData.sections.map((section, i) => {
             _childs.push(
                 <Row
+                    href={{ query: { section: section.name, step: section.steps[0].name } }}
                     key={section.name}
-                    isCurrent={currentSection?.name === section.name}
+                    rowName={section.name}
                     type='section'
                     decoratorText={String.fromCharCode('A'.charCodeAt(0) + i)}
-                    label='section label'
+                    label={section.name}
                 />
             )
             section.steps.map((step) => {
                 _childs.push(
                     <Row
-                        key={step.name}
-                        isCurrent={currentStep?.name === step.name}
+                        href={{ query: { section: section.name, step: step.name } }}
+                        key={`${section.name}${step.name}`}
                         type='step'
                         label={step.name}
+                        rowName={step.name}
                     />
                 )
             })
         })
         setChilds(_childs)
-    }, [currentSection, currentStep])
+    }, [])
 
     return (
-        <Box
-            data-component='Navigation'
-            d='grid'
-            gridRowGap='10px'
-            gridTemplateColumns='auto auto'
-            justifyContent='flex-start'
-            alignItems='center'
-        >
+        <Box data-component='Navigation' d='grid' gridRowGap='10px' gridTemplateColumns='auto'>
             {childs}
         </Box>
     )

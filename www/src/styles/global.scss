@@ -1,4 +1,11 @@
 // @import '~react-vis/dist/style';
 body {
     background-color: black;
+    --global-transition: all 150ms ease-in-out;
+}
+
+*,
+*::before,
+*::after {
+    transition: var(--global-transition);
 }

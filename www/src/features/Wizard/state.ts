@@ -1,7 +1,6 @@
 import Router, { useRouter } from 'next/router'
 import { isEmptyObject } from '~/common/utils'
 import { wizardData } from '~/features/Wizard/data'
-import { RowType } from '~/features/Wizard/types'
 
 const goUrl = ({ url }: { url: Record<string, any> }) => {
     Router.push(url, url, { shallow: true })

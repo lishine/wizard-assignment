@@ -1,4 +1,6 @@
-import { Box, BoxProps } from '@chakra-ui/react'
+import { Box, BoxProps, Flex } from '@chakra-ui/react'
+import { Link, Url } from '~/components/Link'
+import { useCurrentState } from '~/features/Wizard/state'
 import { RowType } from '~/features/Wizard/types'
 
 const labelCss: Record<RowType, BoxProps> = {
@@ -26,33 +28,46 @@ const decoratorCss: Record<RowType, BoxProps> = {
 }
 
 export const Row = ({
-    isCurrent = false,
     type,
     decoratorText,
     label,
+    href,
+    rowName,
 }: {
-    isCurrent?: boolean
     type: RowType
     decoratorText?: string
     label: string
+    href: Url
+    rowName: string
 }) => {
+    let { section: currentSection, step: currentStep } = useCurrentState()
+
+    let isCurrent = false
+    if (type === 'section') {
+        isCurrent = currentSection?.name === rowName
+    } else {
+        isCurrent = currentStep?.name === rowName
+    }
+
     return (
-        <>
-            <Box d='flex' alignItems='center' justifyContent='center'>
-                <Box
-                    data-component='Decorator'
-                    {...decoratorCss[type]}
-                    borderColor={isCurrent ? 'blue' : 'grey'}
-                    d='flex'
-                    alignItems='center'
-                    justifyContent='center'
-                >
-                    {decoratorText}
+        <Link href={href}>
+            <Flex>
+                <Box d='flex' alignItems='center' justifyContent='center' w='50px'>
+                    <Box
+                        data-component='Decorator'
+                        {...decoratorCss[type]}
+                        borderColor={isCurrent ? 'darkblue' : 'grey'}
+                        d='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                    >
+                        {decoratorText}
+                    </Box>
                 </Box>
-            </Box>
-            <Box ml={4} textColor={isCurrent ? 'blue' : 'grey'} {...labelCss[type]}>
-                {label}
-            </Box>
-        </>
+                <Box ml={4} textColor={isCurrent ? 'black' : 'grey'} {...labelCss[type]}>
+                    {label}
+                </Box>
+            </Flex>
+        </Link>
     )
 }
